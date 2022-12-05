@@ -18,7 +18,7 @@ import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { Request } from 'express';
-import { User } from "../../../decorator/user.decorator";
+import { User } from '../../../decorator/user.decorator';
 
 @Controller('comments')
 export class CommentsController {
@@ -32,12 +32,11 @@ export class CommentsController {
     );
 
     if (!comment) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return comment
+    return comment;
   }
-
 
   @Put(':id')
   @HttpCode(204)
@@ -45,7 +44,7 @@ export class CommentsController {
   async updateCommentById(
     @Body() dto: CommentDTO,
     @Param('id') commentId: string,
-    @User() user: UserDBModel
+    @User() user: UserDBModel,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -75,7 +74,7 @@ export class CommentsController {
   async updateLikeStatus(
     @Body() dto: ReactionDto,
     @Param('id') commentId: string,
-    @User() user: UserDBModel
+    @User() user: UserDBModel,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -101,7 +100,7 @@ export class CommentsController {
   @UseGuards(AuthBearerGuard)
   async deleteCommentById(
     @Param('id') commentId: string,
-    @User() user: UserDBModel
+    @User() user: UserDBModel,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 

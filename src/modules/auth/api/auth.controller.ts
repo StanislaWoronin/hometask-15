@@ -9,8 +9,8 @@ import {
   Post,
   Req,
   Res,
-  UseGuards, UsePipes
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from '../application/auth.service';
 import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
@@ -21,12 +21,12 @@ import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CheckCredentialGuard } from '../../../guards/check-credential.guard';
 import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
-import { ThrottlerGuard } from "@nestjs/throttler";
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { EmailResendingValidationPipe } from '../../../pipe/email-resending.pipe';
-import { User } from "../../../decorator/user.decorator";
+import { User } from '../../../decorator/user.decorator';
 import { EmailDTO } from './dto/emailDTO';
 import { NewPasswordDTO } from './dto/newPasswordDTO';
-import { RegistrationConfirmationDTO } from "./dto/registration-confirmation.dto";
+import { RegistrationConfirmationDTO } from './dto/registration-confirmation.dto';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { UserDTO } from '../../users/api/dto/userDTO';
 import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model';

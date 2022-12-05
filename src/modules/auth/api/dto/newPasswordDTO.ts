@@ -1,5 +1,5 @@
 import { IsString, Length, Validate } from 'class-validator';
-import { ConfirmationCodeValidator } from "../../../../validation/confirmation-code.validator";
+import { ConfirmationCodeValidator } from '../../../../validation/confirmation-code.validator';
 
 export class NewPasswordDTO {
   @IsString()

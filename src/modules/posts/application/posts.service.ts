@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
@@ -14,7 +14,7 @@ import { paginationContentPage } from '../../../helper.functions';
 import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { IBlogsRepository } from "../../blogs/infrastructure/blogs-repository.interface";
+import { IBlogsRepository } from '../../blogs/infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class PostsService {
@@ -68,7 +68,7 @@ export class PostsService {
   }
 
   async createPost(
-    dto: any, /*PostDTO | PostWithBlogIdDTO,*/ // TODO типизация
+    dto: any /*PostDTO | PostWithBlogIdDTO,*/, // TODO типизация
     blogId?: string,
   ): Promise<PostViewModel | null> {
     let id = blogId;

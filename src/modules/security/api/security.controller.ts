@@ -13,7 +13,7 @@ import { SecurityService } from '../application/security.service';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
 import { Request } from 'express';
-import { User } from "../../../decorator/user.decorator";
+import { User } from '../../../decorator/user.decorator';
 
 @Controller('security')
 export class SecurityController {
@@ -25,7 +25,7 @@ export class SecurityController {
     return this.securityService.getAllActiveSessions(user.id);
   }
 
-  @UseGuards( RefreshTokenValidationGuard)
+  @UseGuards(RefreshTokenValidationGuard)
   @Delete('devices')
   @HttpCode(204)
   async deleteActiveSessions(@Req() req: Request) {
@@ -41,7 +41,7 @@ export class SecurityController {
     return;
   }
 
-  @UseGuards( RefreshTokenValidationGuard)
+  @UseGuards(RefreshTokenValidationGuard)
   @Delete('devices/:id')
   @HttpCode(204)
   async deleteActiveSessionsById(

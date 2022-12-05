@@ -30,7 +30,7 @@ export class CommentsService {
     const commentsDB = await this.commentsRepository.getComments(query, postId);
 
     if (!commentsDB.length) {
-      return null
+      return null;
     }
 
     const totalCount = await this.commentsRepository.getTotalCount(postId);

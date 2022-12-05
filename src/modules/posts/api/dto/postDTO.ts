@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString, Length, Validate } from "class-validator";
+import { IsNotEmpty, IsString, Length, Validate } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
-import { BlogExistValidator } from "../../../../validation/blog-exist.validator";
+import { BlogExistValidator } from '../../../../validation/blog-exist.validator';
 
 export class PostDTO {
   @IsString()
@@ -36,7 +36,7 @@ export class PostWithBlogIdDTO {
   content: string;
 
   @IsString()
-  @Transform(({value}) => value.trim())
+  @Transform(({ value }) => value.trim())
   @IsNotEmpty()
   @Validate(BlogExistValidator)
   blogId: string;

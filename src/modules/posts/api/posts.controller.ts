@@ -10,8 +10,9 @@ import {
   Put,
   Query,
   Req,
-  UseGuards, UsePipes
-} from "@nestjs/common";
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CommentsService } from '../../comments/application/comments.service';
@@ -21,8 +22,8 @@ import { PostWithBlogIdDTO } from './dto/postDTO';
 import { Request } from 'express';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { User } from "../../../decorator/user.decorator";
-import { UserDBModel } from "../../users/infrastructure/entity/userDB.model";
+import { User } from '../../../decorator/user.decorator';
+import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 
 @Controller('posts')
 export class PostsController {
@@ -64,10 +65,10 @@ export class PostsController {
     );
 
     if (!comment) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return comment
+    return comment;
   }
 
   @Post()
@@ -83,9 +84,8 @@ export class PostsController {
   async createComment(
     @Body() dto: CommentDTO,
     @Param('id') postId: string,
-    @User() user: UserDBModel
+    @User() user: UserDBModel,
   ) {
-
     const post = await this.postsService.getPostById(postId);
 
     if (!post) {
@@ -125,11 +125,7 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    await this.postsService.updateLikesInfo(
-      user.id,
-      commentId,
-      dto.likeStatus,
-    );
+    await this.postsService.updateLikesInfo(user.id, commentId, dto.likeStatus);
 
     return;
   }

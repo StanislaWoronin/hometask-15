@@ -1,6 +1,10 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import { EmailConfirmationRepository } from '../modules/users/infrastructure/emailConfirmation.repository';
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 @ValidatorConstraint({ name: 'ConfirmationCodeValid', async: true })
 @Injectable()
@@ -31,6 +35,6 @@ export class ConfirmationCodeValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return "Confirmation code is not valid";
+    return 'Confirmation code is not valid';
   }
 }
