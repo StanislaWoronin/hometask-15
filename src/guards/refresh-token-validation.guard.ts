@@ -2,11 +2,10 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  PipeTransform,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '../modules/auth/application/jwt.service';
-import { UsersService } from '../modules/users/application/users.service';
+import { UsersService } from '../modules/super-admin/application/users.service';
+import { JwtService } from '../modules/public/auth/application/jwt.service';
 
 @Injectable()
 export class RefreshTokenValidationGuard implements CanActivate {

@@ -1,5 +1,5 @@
-import { CommentBDModel } from '../modules/comments/infrastructure/entity/commentDB.model';
-import { CommentViewModel } from '../modules/comments/api/dto/commentView.model';
+import { CommentBDModel } from '../modules/public/comments/infrastructure/entity/commentDB.model';
+import { CommentViewModel } from '../modules/public/comments/api/dto/commentView.model';
 
 export const toCommentOutputBeforeCreate = (
   comment: CommentBDModel,

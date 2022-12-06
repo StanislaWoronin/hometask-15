@@ -1,7 +1,7 @@
-import { BlogViewModel } from '../modules/blogs/api/dto/blogView.model';
-import { PostViewModel } from '../modules/posts/api/dto/postsView.model';
-import { UserViewModel } from '../modules/users/api/dto/userView.model';
-import { CommentViewModel } from '../modules/comments/api/dto/commentView.model';
+import { UserViewModel } from '../modules/super-admin/api/dto/userView.model';
+import { BlogViewModel } from '../modules/public/blogs/api/dto/blogView.model';
+import { PostViewModel } from '../modules/public/posts/api/dto/postsView.model';
+import { CommentViewModel } from '../modules/public/comments/api/dto/commentView.model';
 
 export class ContentPageModel {
   constructor(

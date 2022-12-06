@@ -9,9 +9,9 @@ export const User = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
 
     if (!request.user) {
-      throw new Error('JwtGuard must be used')
+      throw new Error('JwtGuard must be used');
     }
 
-    return request.user.id
+    return request.user;
   },
 );

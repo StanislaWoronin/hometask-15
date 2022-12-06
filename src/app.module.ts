@@ -3,44 +3,53 @@ import {
   Module,
   NestModule,
 } from '@nestjs/common';
-import { AuthController } from './modules/auth/api/auth.controller';
-import { BlogsController } from './modules/blogs/api/blogs.controller';
-import { CommentsController } from './modules/comments/api/comments.controller';
-import { PostsController } from './modules/posts/api/posts.controller';
-import { SecurityController } from './modules/security/api/security.controller';
-import { TestingController } from './modules/testing/testingController';
-import { UsersController } from './modules/users/api/users.controller';
-import { AuthService } from './modules/auth/application/auth.service';
-import { BlogsService } from './modules/blogs/application/blogs.service';
-import { CommentsService } from './modules/comments/application/comments.service';
-import { EmailConfirmationService } from './modules/users/application/emailConfirmation.service';
-import { EmailAdapters } from './modules/emailTransfer/email.adapter';
-import { EmailManager } from './modules/emailTransfer/email.manager';
-import { JwtService } from './modules/auth/application/jwt.service';
-import { LikesService } from './modules/likes/application/likes.service';
-import { PostsService } from './modules/posts/application/posts.service';
-import { SecurityService } from './modules/security/application/security.service';
-import { UsersService } from './modules/users/application/users.service';
-import { BanInfoRepository } from './modules/users/infrastructure/banInfo.repository';
-import { BlogsRepository } from './modules/blogs/infrastructure/blogs.repository';
-import { CommentsRepository } from './modules/comments/infrastructure/comments.repository';
-import { EmailConfirmationRepository } from './modules/users/infrastructure/emailConfirmation.repository';
-import { JwtRepository } from './modules/auth/infrastructure/jwt.repository';
-import { LikesRepository } from './modules/likes/infrastructure/likes.repository';
-import { PostsRepository } from './modules/posts/infrastructure/posts.repository';
-import { SecurityRepository } from './modules/security/infrastructure/security.repository';
-import { UsersRepository } from './modules/users/infrastructure/users.repository';
-import { EmailResendingValidationPipe } from './pipe/email-resending.pipe';
-import { EmailExistValidationPipe } from './pipe/email-exist-validation.pipe';
-import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { BlogExistValidator } from './validation/blog-exist.validator';
-import { ConfirmationCodeValidator } from './validation/confirmation-code.validator';
-import { IBlogsRepository } from './modules/blogs/infrastructure/blogs-repository.interface';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { BloggerController } from "./modules/blogger/api/blogger.controller";
+import { BloggerPostsService } from "./modules/blogger/application/posts.service";
+import { BloggerBlogService } from "./modules/blogger/application/blogs.service";
+import { BloggerPostsRepository } from "./modules/blogger/infrastructure/posts.repository";
+import { BloggerBlogRepository } from "./modules/blogger/infrastructure/blogs.repository";
+import { BanInfoRepository } from "./modules/super-admin/infrastructure/banInfo.repository";
+import { EmailConfirmationRepository } from "./modules/super-admin/infrastructure/emailConfirmation.repository";
+import { SaBlogsController } from "./modules/super-admin/api/sa-blogs.controller";
+import { SaBlogsService } from "./modules/super-admin/application/sa-blogs-service";
+import { SaBlogsRepository } from "./modules/super-admin/infrastructure/sa-blogs.repository";
+import { UsersController } from "./modules/super-admin/api/users.controller";
+import { UsersService } from "./modules/super-admin/application/users.service";
+import { UsersRepository } from "./modules/super-admin/infrastructure/users.repository";
+import { JwtRepository } from "./modules/public/auth/infrastructure/jwt.repository";
+import { JwtService } from "./modules/public/auth/application/jwt.service";
+import { AuthController } from "./modules/public/auth/api/auth.controller";
+import { BlogsController } from "./modules/public/blogs/api/blogs.controller";
+import { CommentsController } from "./modules/public/comments/api/comments.controller";
+import { PostsController } from "./modules/public/posts/api/posts.controller";
+import { SecurityController } from "./modules/public/security/api/security.controller";
+import { TestingController } from "./modules/testing/testingController";
+import { AuthService } from "./modules/public/auth/application/auth.service";
+import { EmailConfirmationService } from "./modules/super-admin/application/emailConfirmation.service";
+import { CommentsService } from "./modules/public/comments/application/comments.service";
+import { EmailAdapters } from "./modules/public/auth/email-transfer/email.adapter";
+import { EmailManager } from "./modules/public/auth/email-transfer/email.manager";
+import { LikesService } from "./modules/public/likes/application/likes.service";
+import { PostsService } from "./modules/public/posts/application/posts.service";
+import { SecurityService } from "./modules/public/security/application/security.service";
+import { BlogsService } from "./modules/public/blogs/application/blogs.service";
+import { BlogsRepository } from "./modules/public/blogs/infrastructure/blogs.repository";
+import { CommentsRepository } from "./modules/public/comments/infrastructure/comments.repository";
+import { LikesRepository } from "./modules/public/likes/infrastructure/likes.repository";
+import { PostsRepository } from "./modules/public/posts/infrastructure/posts.repository";
+import { SecurityRepository } from "./modules/public/security/infrastructure/security.repository";
+import { EmailExistValidationPipe } from "./pipe/email-exist-validation.pipe";
+import { EmailResendingValidationPipe } from "./pipe/email-resending.pipe";
+import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
+import { BlogExistValidator } from "./validation/blog-exist.validator";
+import { ConfirmationCodeValidator } from "./validation/confirmation-code.validator";
 
 const controllers = [
+  BloggerController,
+  SaBlogsController,
   AuthController,
   BlogsController,
   CommentsController,
@@ -57,21 +66,23 @@ const pipes = [
 ]
 
 const repositories = [
+  BloggerBlogRepository,
+  BloggerPostsRepository,
   BanInfoRepository,
-  {
-    provide: IBlogsRepository,
-    useClass: BlogsRepository,
-  },
+  BlogsRepository,
   CommentsRepository,
   EmailConfirmationRepository,
   JwtRepository,
   LikesRepository,
   PostsRepository,
   SecurityRepository,
+  SaBlogsRepository,
   UsersRepository
 ]
 
 const services = [
+  BloggerBlogService,
+  BloggerPostsService,
   AuthService,
   BlogsService,
   CommentsService,
@@ -82,6 +93,7 @@ const services = [
   LikesService,
   PostsService,
   SecurityService,
+  SaBlogsService,
   UsersService
 ]
 
@@ -91,7 +103,7 @@ const validators = [BlogExistValidator, ConfirmationCodeValidator]
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
+    //ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
   ],
   controllers: [
     ...controllers

@@ -1,10 +1,10 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
-import { EmailConfirmationRepository } from '../modules/users/infrastructure/emailConfirmation.repository';
+import { Injectable } from '@nestjs/common';
 import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { EmailConfirmationRepository } from '../modules/super-admin/infrastructure/emailConfirmation.repository';
 
 @ValidatorConstraint({ name: 'ConfirmationCodeValid', async: true })
 @Injectable()

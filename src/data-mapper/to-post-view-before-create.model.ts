@@ -1,4 +1,4 @@
-import { PostDBModel } from '../modules/posts/infrastructure/entity/postDB.model';
+import { PostDBModel } from '../modules/blogger/infrastructure/entity/post-db.model';
 
 export const toPostOutputBeforeCreate = (postsBD: PostDBModel) => {
   return {

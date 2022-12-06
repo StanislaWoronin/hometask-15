@@ -12,9 +12,9 @@ export class AuthBasicGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest();
 
-    const authHeader = request.headers.authorization;
+    const authHeader = req.headers.authorization;
 
     if (!authHeader) {
       throw new UnauthorizedException();

@@ -1,5 +1,5 @@
 import { PipeTransform } from '@nestjs/common';
-import { UsersRepository } from '../modules/users/infrastructure/users.repository';
+import { UsersRepository } from '../modules/super-admin/infrastructure/users.repository';
 
 export class LoginExistValidationPipe implements PipeTransform {
   constructor(protected usersRepository: UsersRepository) {}

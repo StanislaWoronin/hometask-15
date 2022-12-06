@@ -1,4 +1,4 @@
-import { DeviceSecurityModel } from '../modules/security/infrastructure/entity/deviceSecurity.model';
+import { DeviceSecurityModel } from '../modules/public/security/infrastructure/entity/deviceSecurity.model';
 
 export const toActiveSessionsViewModel = (device: DeviceSecurityModel) => {
   return {

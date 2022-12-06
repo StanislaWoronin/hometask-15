@@ -2,12 +2,11 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  PipeTransform,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersRepository } from '../modules/users/infrastructure/users.repository';
-import { UserDBModel } from '../modules/users/infrastructure/entity/userDB.model';
+import { UsersRepository } from '../modules/super-admin/infrastructure/users.repository';
 import bcrypt from 'bcrypt';
+import { UserDBModel } from '../modules/super-admin/infrastructure/entity/userDB.model';
 
 @Injectable()
 export class CheckCredentialGuard implements CanActivate {

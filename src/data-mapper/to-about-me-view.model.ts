@@ -1,4 +1,4 @@
-import { UserDBModel } from '../modules/users/infrastructure/entity/userDB.model';
+import { UserDBModel } from '../modules/super-admin/infrastructure/entity/userDB.model';
 
 export const toAboutMeViewModel = (userDB: UserDBModel) => {
   return {
