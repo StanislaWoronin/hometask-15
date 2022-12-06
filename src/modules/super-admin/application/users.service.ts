@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import bcrypt from 'bcrypt';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { BanUserDTO } from "../api/dto/ban-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -107,6 +108,12 @@ export class UsersService {
       passwordSalt,
       passwordHash,
     );
+  }
+
+  async updateBanStatus(id: string, dto: BanUserDTO) {
+    let banDate = new Date()
+
+    return this.banInfoRepository.updateBanStatus(id, dto, banDate)
   }
 
   async deleteUserById(userId: string): Promise<boolean> {
