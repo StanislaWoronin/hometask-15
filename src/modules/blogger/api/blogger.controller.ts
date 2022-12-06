@@ -44,7 +44,6 @@ export class BloggerController {
     @Body() dto: BlogDTO,
     @User() user: UserDBModel,
   ): Promise<BlogViewModel> {
-    console.log();
     const createdBlog = this.blogsService.createBlog(user.id, dto);
 
     if (!createdBlog) {

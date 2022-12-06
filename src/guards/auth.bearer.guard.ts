@@ -37,7 +37,7 @@ export class AuthBearerGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    req.userId = user;
+    req.user = user;
     req.token = tokenPayload;
     return true;
   }
