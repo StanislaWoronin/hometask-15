@@ -3,6 +3,8 @@ import { PostViewModel } from './modules/public/posts/api/dto/postsView.model';
 import { UserViewModelWithBanInfo } from './modules/super-admin/api/dto/userView.model';
 import bcrypt from 'bcrypt';
 import { BlogViewModel } from './modules/public/blogs/api/dto/blogView.model';
+import { BlogViewWithOwnerInfoModel } from "./modules/super-admin/api/dto/blog-view-with-owner-info.model";
+import { ContentPageModel } from "./global-model/contentPage.model";
 
 export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
   return (pageNumber - 1) * pageSize;
@@ -21,11 +23,12 @@ export const paginationContentPage = (
   pageSize: number,
   content:
     | BlogViewModel[]
+    | BlogViewWithOwnerInfoModel[]
     | PostViewModel[]
     | UserViewModelWithBanInfo[]
     | CommentViewModel[],
   totalCount: number,
-) => {
+): ContentPageModel => {
   return {
     pagesCount: givePagesCount(totalCount, pageSize),
     page: Number(pageNumber),

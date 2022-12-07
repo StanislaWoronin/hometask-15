@@ -41,6 +41,7 @@ export class UsersService {
     const users = await Promise.all(
       usersDB.map(async (u) => await this.addBanInfo(u)),
     );
+
     const totalCount = await this.usersRepository.getTotalCount(
       query.searchLoginTerm,
       query.searchEmailTerm,

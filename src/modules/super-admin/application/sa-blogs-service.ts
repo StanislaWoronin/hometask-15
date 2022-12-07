@@ -4,17 +4,27 @@ import { paginationContentPage } from '../../../helper.functions';
 import { SaBlogsRepository } from '../infrastructure/sa-blogs.repository';
 import { BindBlogDTO } from '../api/dto/bind-blog.dto';
 import { Injectable } from "@nestjs/common";
+import { BlogModel } from "../infrastructure/entity/blog.model";
+import { UsersRepository } from "../infrastructure/users.repository";
+import { BlogViewWithOwnerInfoModel } from "../api/dto/blog-view-with-owner-info.model";
 
 @Injectable()
 export class SaBlogsService {
-  constructor(protected saBlogsRepository: SaBlogsRepository) {}
+  constructor(
+    protected saBlogsRepository: SaBlogsRepository,
+    protected userRepository: UsersRepository
+  ) {}
 
   async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {
-    const blogs = await this.saBlogsRepository.getBlogs(query);
+    const blogsDB = await this.saBlogsRepository.getBlogs(query);
 
-    if (!blogs) {
+    if (!blogsDB) {
       return null;
     }
+
+    const blogs = await Promise.all(
+      blogsDB.map(async  (b) => await this.addOwnerInfo(b))
+    );
 
     const totalCount = await this.saBlogsRepository.getTotalCount(
       query.searchNameTerm,
@@ -30,5 +40,28 @@ export class SaBlogsService {
 
   async bindBlog(params: BindBlogDTO) {
     return this.saBlogsRepository.bindBlog(params);
+  }
+
+  private async addOwnerInfo(blog: BlogModel): Promise<BlogViewWithOwnerInfoModel> {
+    const ownerInfo = await this.userRepository.getUserByIdOrLoginOrEmail(blog.userId)
+
+    let userId = null
+    let userLogin = null
+    if (ownerInfo) {
+      userId = ownerInfo.id
+      userLogin = ownerInfo.login
+    }
+
+    return {
+      id: blog.id,
+      name: blog.name,
+      description: blog.description,
+      websiteUrl: blog.websiteUrl,
+      createdAt: blog.createdAt,
+      blogOwnerInfo: {
+        userId,
+        userLogin
+      }
+    }
   }
 }
