@@ -1,7 +1,6 @@
 import { BanInfoModel } from './entity/banInfo.model';
 import { BanInfoScheme } from './entity/banInfo.scheme';
 import { Injectable } from '@nestjs/common';
-import { BanUserDTO } from "../api/dto/ban-user.dto";
 
 @Injectable()
 export class BanInfoRepository {

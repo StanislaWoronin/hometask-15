@@ -7,7 +7,7 @@ export class LikesRepository {
   async getUserReaction(parentId: string, userId: string) {
     try {
       return LikesScheme.findOne(
-        { parentId, userId },
+        { parentId, userId, isBanned: false },
         { _id: false, parentId: false, userId: false, __v: false },
       ).lean();
     } catch (e) {
@@ -18,7 +18,7 @@ export class LikesRepository {
   async getNewestLikes(parentId: string): Promise<NewestLikesModel[] | null> {
     try {
       return LikesScheme.find(
-        { parentId, status: 'Like' },
+        { parentId, status: 'Like', isBanned: false },
         { _id: false, parentId: false, status: false, __v: false },
       )
         .sort({ addedAt: -1 })
@@ -30,10 +30,10 @@ export class LikesRepository {
   }
 
   async getLikeReactionsCount(parentId: string): Promise<number> {
-    return LikesScheme.countDocuments({ parentId, status: 'Like' });
+    return LikesScheme.countDocuments({ parentId, status: 'Like', isBanned: false });
   }
   async getDislikeReactionsCount(parentId: string): Promise<number> {
-    return LikesScheme.countDocuments({ parentId, status: 'Dislike' });
+    return LikesScheme.countDocuments({ parentId, status: 'Dislike', isBanned: false });
   }
 
   async updateUserReaction(
@@ -48,6 +48,18 @@ export class LikesRepository {
         { parentId: commentId, userId, login },
         { $set: { status, addedAt } },
         { upsert: true },
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async updateBanStatus(userId: string, isBanned: boolean) {
+    try {
+      await LikesScheme.updateOne(
+        { userId },
+        { $set: { isBanned } },
       );
       return true;
     } catch (e) {

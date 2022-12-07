@@ -19,12 +19,14 @@ import add from 'date-fns/add';
 import bcrypt from 'bcrypt';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BanUserDTO } from "../api/dto/ban-user.dto";
+import { LikesRepository } from "../../public/likes/infrastructure/likes.repository";
 
 @Injectable()
 export class UsersService {
   constructor(
     protected banInfoRepository: BanInfoRepository,
     protected emailConfirmationRepository: EmailConfirmationRepository,
+    protected likesRepository: LikesRepository,
     protected usersRepository: UsersRepository,
   ) {}
 
@@ -110,15 +112,16 @@ export class UsersService {
     );
   }
 
-  async updateBanStatus(id: string, dto: BanUserDTO) {
-    let banDate = new Date()
-    let banReason = dto.banReason
-    if (!dto.isBanned) {
-      banDate = null
-      banReason = null
+  async updateBanStatus(userId: string, dto: BanUserDTO) {
+    let banDate = null
+    let banReason = null
+    if (dto.isBanned) {
+      banDate = new Date()
+      banReason = dto.banReason
     }
 
-    return this.banInfoRepository.updateBanStatus(id, dto.isBanned, banReason, banDate)
+    await this.likesRepository.updateBanStatus(userId, dto.isBanned)
+    return this.banInfoRepository.updateBanStatus(userId, dto.isBanned, banReason, banDate)
   }
 
   async deleteUserById(userId: string): Promise<boolean> {

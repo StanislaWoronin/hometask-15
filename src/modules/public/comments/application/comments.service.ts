@@ -11,10 +11,12 @@ import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { UserDBModel } from '../../../super-admin/infrastructure/entity/userDB.model';
 import { toCommentOutputBeforeCreate } from '../../../../data-mapper/to-comment-view-before-create.model';
+import { BanInfoRepository } from "../../../super-admin/infrastructure/banInfo.repository";
 
 @Injectable()
 export class CommentsService {
   constructor(
+    protected banInfoRepository: BanInfoRepository,
     protected likesService: LikesService,
     protected jwtService: JwtService,
     protected commentsRepository: CommentsRepository,
@@ -53,6 +55,12 @@ export class CommentsService {
     const comment = await this.commentsRepository.getCommentById(commentId);
 
     if (!comment) {
+      return null;
+    }
+
+    const banInfo = await this.banInfoRepository.getBanInfo(comment.userId)
+
+    if (banInfo.isBanned) {
       return null;
     }
 

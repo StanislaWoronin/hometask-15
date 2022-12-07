@@ -38,11 +38,11 @@ export class UsersController {
     return result.user;
   }
 
-  @Put(':id/ban')
+  @Put(':userId/ban')
   @HttpCode(204)
   async updateBanStatus(@Body() dto: BanUserDTO,
-                @Param('id') id: string) {
-    return await this.usersService.updateBanStatus(id, dto)
+                @Param('userId') userId: string) {
+    return await this.usersService.updateBanStatus(userId, dto)
   }
 
   @Delete(':id')
