@@ -42,6 +42,7 @@ export class UsersController {
   @HttpCode(204)
   async updateBanStatus(@Body() dto: BanUserDTO,
                 @Param('id') id: string) {
+    console.log(id, dto)
     return await this.usersService.updateBanStatus(id, dto)
   }
 

@@ -58,7 +58,7 @@ export class UsersService {
     const userAccountId = uuidv4();
 
     const accountData = new UserDBModel(
-      userAccountId,
+      userAccountId, // по идее должно быть пустым
       dto.login,
       dto.email,
       passwordSalt,
