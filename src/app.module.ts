@@ -46,6 +46,7 @@ import { EmailResendingValidationPipe } from "./pipe/email-resending.pipe";
 import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
 import { BlogExistValidator } from "./validation/blog-exist.validator";
 import { ConfirmationCodeValidator } from "./validation/confirmation-code.validator";
+import { CreateUserUseCase } from "./modules/super-admin/api/use-cases/create-user.use-case";
 
 const controllers = [
   BloggerController,
@@ -99,6 +100,8 @@ const services = [
 
 const validators = [BlogExistValidator, ConfirmationCodeValidator]
 
+const useCases = [CreateUserUseCase]
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -113,6 +116,7 @@ const validators = [BlogExistValidator, ConfirmationCodeValidator]
     ...repositories,
     ...services,
     ...validators,
+    ...useCases
   ],
 })
 export class AppModule implements NestModule {

@@ -20,7 +20,6 @@ export class PostsService {
     protected jwtService: JwtService,
     protected likesService: LikesService,
     protected likesRepository: LikesRepository,
-    protected blogsRepository: BlogsRepository,
     protected postsRepository: PostsRepository,
     protected usersRepository: UsersRepository,
   ) {}
@@ -65,47 +64,47 @@ export class PostsService {
     return await this.addLikesInfoForPost(post, userId);
   }
 
-  async createPost(
-    dto: any /*PostDTO | PostWithBlogIdDTO,*/, // TODO типизация
-    blogId?: string,
-  ): Promise<PostViewModel | null> {
-    let id = blogId;
-    if (!blogId) {
-      id = dto.blogId;
-    }
-
-    const newPost = new PostDBModel(
-      uuidv4(),
-      dto.title,
-      dto.shortDescription,
-      dto.content,
-      id,
-      await this.getBlogName(id),
-      new Date().toISOString(),
-    );
-
-    const createdPost = await this.postsRepository.createPost(newPost);
-
-    if (!createdPost) {
-      return null;
-    }
-
-    return toPostOutputBeforeCreate(createdPost);
-  }
-
-  async getBlogName(blogId: string): Promise<string> {
-    const blog = await this.blogsRepository.getBlogById(blogId);
-
-    if (!blog) {
-      return '';
-    }
-
-    return blog.name;
-  }
-
-  async updatePost(postId: string, dto: PostWithBlogIdDTO): Promise<boolean> {
-    return await this.postsRepository.updatePost(postId, dto);
-  }
+  // async createPost(
+  //   dto: any /*PostDTO | PostWithBlogIdDTO,*/,
+  //   blogId?: string,
+  // ): Promise<PostViewModel | null> {
+  //   let id = blogId;
+  //   if (!blogId) {
+  //     id = dto.blogId;
+  //   }
+  //
+  //   const newPost = new PostDBModel(
+  //     uuidv4(),
+  //     dto.title,
+  //     dto.shortDescription,
+  //     dto.content,
+  //     id,
+  //     await this.getBlogName(id),
+  //     new Date().toISOString(),
+  //   );
+  //
+  //   const createdPost = await this.postsRepository.createPost(newPost);
+  //
+  //   if (!createdPost) {
+  //     return null;
+  //   }
+  //
+  //   return toPostOutputBeforeCreate(createdPost);
+  // }
+  //
+  // async getBlogName(blogId: string): Promise<string> {
+  //   const blog = await this.blogsRepository.getBlogById(blogId);
+  //
+  //   if (!blog) {
+  //     return '';
+  //   }
+  //
+  //   return blog.name;
+  // }
+  //
+  // async updatePost(postId: string, dto: PostWithBlogIdDTO): Promise<boolean> {
+  //   return await this.postsRepository.updatePost(postId, dto);
+  // }
 
   async updateLikesInfo(
     userId: string,
@@ -128,9 +127,9 @@ export class PostsService {
     );
   }
 
-  async deletePostById(postId: string): Promise<boolean> {
-    return await this.postsRepository.deletePostById(postId);
-  }
+  // async deletePostById(postId: string): Promise<boolean> {
+  //   return await this.postsRepository.deletePostById(postId);
+  // }
 
   private async addLikesInfoForPost(
     post: PostDBModel,

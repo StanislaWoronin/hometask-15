@@ -5,6 +5,7 @@ export const settings = {
   JWT_SECRET: process.env.JWT_SECRET || '123',
   BASIC_USER: 'admin',
   BASIC_PASS: 'qwerty',
+  SALT_GENERATE_ROUND: '10',
   TIME_TO_EXPIRED_AT: '300000', // Time life for accessToken
   TIME_TO_EXPIRED_RT: '300000', // Time life for refreshToken
   CONNECTION_TIME_LIMIT: '10000',

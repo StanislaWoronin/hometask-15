@@ -16,11 +16,13 @@ import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
 import { BanUserDTO } from "./dto/ban-user.dto";
+import { CreateUserUseCase } from "./use-cases/create-user.use-case";
 
 @UseGuards(AuthBasicGuard)
 @Controller('sa/users')
 export class UsersController {
-  constructor(protected usersService: UsersService) {}
+  constructor(protected usersService: UsersService,
+              protected createUserUseCase: CreateUserUseCase) {}
 
   @Get()
   getUsers(
@@ -33,7 +35,7 @@ export class UsersController {
   @Post()
   @HttpCode(201)
   async createUser(@Body() dto: UserDTO): Promise<UserViewModel> {
-    const result = await this.usersService.createUser(dto);
+    const result = await this.createUserUseCase.execute(dto);
 
     return result.user;
   }

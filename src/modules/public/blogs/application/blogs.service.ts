@@ -1,9 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
-import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
 import { toBlogViewModel } from "../../../../data-mapper/to-blog-view.model";
 import { BlogViewModel } from "../api/dto/blogView.model";
 

@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { BlogViewModel } from './modules/public/blogs/api/dto/blogView.model';
 import { BlogViewWithOwnerInfoModel } from "./modules/super-admin/api/dto/blog-view-with-owner-info.model";
 import { ContentPageModel } from "./global-model/contentPage.model";
+import { settings } from "./settings";
 
 export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
   return (pageNumber - 1) * pageSize;
@@ -14,8 +15,11 @@ export const givePagesCount = (totalCount: number, pageSize: number) => {
   return Math.ceil(totalCount / pageSize);
 };
 
-export const _generateHash = async (password: string, salt: string) => {
-  return await bcrypt.hash(password, salt);
+export const _generateHash = async (password: string) => {
+  const passwordSalt = await bcrypt.genSalt(Number(settings.SALT_GENERATE_ROUND));
+  const passwordHash = await bcrypt.hash(password, passwordSalt);
+
+  return {passwordSalt, passwordHash};
 };
 
 export const paginationContentPage = (

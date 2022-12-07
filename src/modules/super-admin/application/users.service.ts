@@ -10,17 +10,15 @@ import { UserDBModel } from '../infrastructure/entity/userDB.model';
 import { UserDTO } from '../api/dto/userDTO';
 import { UserViewModelWithBanInfo } from '../api/dto/userView.model';
 import { toCreateUserViewModel } from '../../../data-mapper/to-create-user-view.model';
-import {
-  _generateHash,
-  paginationContentPage,
-} from '../../../helper.functions';
+import { _generateHash, paginationContentPage } from "../../../helper.functions";
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
-import bcrypt from 'bcrypt';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BanUserDTO } from "../api/dto/ban-user.dto";
 import { LikesRepository } from "../../public/likes/infrastructure/likes.repository";
 import { BlogsRepository } from "../../public/blogs/infrastructure/blogs.repository";
+import bcrypt from "bcrypt";
+import { settings } from "../../../settings";
 
 @Injectable()
 export class UsersService {
@@ -57,61 +55,16 @@ export class UsersService {
     );
   }
 
-  async createUser(dto: UserDTO) {
-    const passwordSalt = await bcrypt.genSalt(10);
-    const passwordHash = await _generateHash(dto.password, passwordSalt);
-    const userAccountId = uuidv4();
-
-    const accountData = new UserDBModel(
-      userAccountId, // по идее должно быть пустым
-      dto.login,
-      dto.email,
-      passwordSalt,
-      passwordHash,
-      new Date().toISOString(),
-    );
-
-    const emailConfirmation = new EmailConfirmationModel(
-      userAccountId,
-      uuidv4(),
-      add(new Date(), { hours: 24 }),
-      false,
-    );
-
-    const banInfo = new BanInfoModel(userAccountId, false, null, null);
-
-    const userAccount = new UserAccountModel(
-      accountData,
-      banInfo,
-      emailConfirmation,
-    );
-
-    const createdAccount = await this.createUserAccount(userAccount);
-
-    if (!createdAccount) {
-      return null;
-    }
-
-    const createdUser = toCreateUserViewModel(accountData, banInfo);
-
-    return {
-      user: createdUser,
-      email: accountData.email,
-      code: emailConfirmation.confirmationCode,
-    };
-  } // TODO избавиться от аккаунта
-
   async updateUserPassword(
     userId: string,
     newPassword: string,
   ): Promise<boolean> {
-    const passwordSalt = await bcrypt.genSalt(10);
-    const passwordHash = await _generateHash(newPassword, passwordSalt); //TODO вынести в отдельную функцию
+    const hash = await _generateHash(newPassword);
 
     return await this.usersRepository.updateUserPassword(
       userId,
-      passwordSalt,
-      passwordHash,
+      hash.passwordSalt,
+      hash.passwordHash,
     );
   }
 
@@ -133,25 +86,6 @@ export class UsersService {
     await this.emailConfirmationRepository.deleteEmailConfirmationById(userId);
 
     if (!userDeleted) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private async createUserAccount(
-    userAccount: UserAccountModel,
-  ): Promise<boolean> {
-    const user = await this.usersRepository.createUser(userAccount.accountData);
-    const banInfo = await this.banInfoRepository.createBanInfo(
-      userAccount.banInfo,
-    );
-    const emailConfirmation =
-      await this.emailConfirmationRepository.createEmailConfirmation(
-        userAccount.emailConfirmation,
-      );
-
-    if (!user || !emailConfirmation) {
       return false;
     }
 
