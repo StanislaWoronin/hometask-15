@@ -18,8 +18,8 @@ export class BanInfoRepository {
     }
   }
 
-  async updateBanStatus(id: string, dto: BanUserDTO, banDate: Date): Promise<boolean> {
-    const result = await BanInfoScheme.updateOne({id}, {$set: {isBanned: dto.isBanned, banReason: dto.banReason, banDate}})
+  async updateBanStatus(id: string, isBanned: boolean, banReason: string, banDate: Date): Promise<boolean> {
+    const result = await BanInfoScheme.updateOne({id}, {$set: {isBanned, banReason, banDate}})
 
     return result.matchedCount === 1
   }

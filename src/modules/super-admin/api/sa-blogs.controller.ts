@@ -18,7 +18,6 @@ export class SaBlogsController {
   constructor(protected saBlogsService: SaBlogsService) {}
 
   @Get()
-  @HttpCode(204)
   getBlogs(
     @Query()
     query: QueryParametersDTO,

@@ -112,8 +112,13 @@ export class UsersService {
 
   async updateBanStatus(id: string, dto: BanUserDTO) {
     let banDate = new Date()
+    let banReason = dto.banReason
+    if (!dto.isBanned) {
+      banDate = null
+      banReason = null
+    }
 
-    return this.banInfoRepository.updateBanStatus(id, dto, banDate)
+    return this.banInfoRepository.updateBanStatus(id, dto.isBanned, banReason, banDate)
   }
 
   async deleteUserById(userId: string): Promise<boolean> {

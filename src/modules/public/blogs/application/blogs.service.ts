@@ -4,6 +4,8 @@ import { QueryParametersDTO } from '../../../../global-model/query-parameters.dt
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { BlogModel } from '../../../super-admin/infrastructure/entity/blog.model';
+import { toBlogViewModel } from "../../../../data-mapper/to-blog-view.model";
+import { BlogViewModel } from "../api/dto/blogView.model";
 
 @Injectable()
 export class BlogsService {
@@ -28,7 +30,8 @@ export class BlogsService {
     );
   }
 
-  async getBlogById(blogId: string): Promise<BlogModel | null> {
-    return await this.blogsRepository.getBlogById(blogId);
+  async getBlogById(blogId: string): Promise<BlogViewModel | null> {
+    const blog = await this.blogsRepository.getBlogById(blogId)
+    return toBlogViewModel(blog);
   }
 }
