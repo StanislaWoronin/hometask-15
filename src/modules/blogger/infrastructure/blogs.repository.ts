@@ -10,9 +10,9 @@ export class BloggerBlogRepository {
   async getBlogs(userId: string, query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find({
         $and: [
-          {userId, isBanned: false},
+          { userId, isBanned: false },
           { name: { $regex: query.searchNameTerm, $options: 'i' } }
-        ]}, { _id: false, __v: false },
+        ]}, { _id: false, __v: false, userId: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
@@ -20,9 +20,12 @@ export class BloggerBlogRepository {
       .lean();
   }
 
-  async getTotalCount(searchNameTerm: string): Promise<number> {
+  async getTotalCount(userId: string, searchNameTerm: string): Promise<number> {
     return BlogSchema.countDocuments({
-      name: { $regex: searchNameTerm, $options: 'i' },
+      $and: [
+        { userId },
+        { name: {$regex: searchNameTerm, $options: 'i' }}
+      ],
     });
   }
 

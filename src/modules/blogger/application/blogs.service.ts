@@ -14,16 +14,14 @@ export class BloggerBlogService {
   constructor(protected blogsRepository: BloggerBlogRepository) {}
 
   async getBlogs(userId: string, query: QueryParametersDTO): Promise<ContentPageModel | null> {
-    const blogsDB = await this.blogsRepository.getBlogs(userId, query);
+    const blogs = await this.blogsRepository.getBlogs(userId, query);
 
-    if (!blogsDB) {
+    if (!blogs) {
       return null;
     }
 
-    const blogs = blogsDB.map(b => toBlogViewModel(b))
-
     const totalCount = await this.blogsRepository.getTotalCount(
-      query.searchNameTerm,
+      userId, query.searchNameTerm,
     );
 
     return paginationContentPage(
