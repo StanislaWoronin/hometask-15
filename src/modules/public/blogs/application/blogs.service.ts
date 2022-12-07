@@ -3,7 +3,7 @@ import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
-import { BlogModel } from '../../../super-admin/infrastructure/entity/blog.model';
+import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
 import { toBlogViewModel } from "../../../../data-mapper/to-blog-view.model";
 import { BlogViewModel } from "../api/dto/blogView.model";
 
@@ -32,6 +32,11 @@ export class BlogsService {
 
   async getBlogById(blogId: string): Promise<BlogViewModel | null> {
     const blog = await this.blogsRepository.getBlogById(blogId)
+
+    if (!blog) {
+      return null
+    }
+
     return toBlogViewModel(blog);
   }
 }

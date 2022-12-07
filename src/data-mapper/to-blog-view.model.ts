@@ -1,6 +1,6 @@
-import { BlogModel } from '../modules/super-admin/infrastructure/entity/blog.model';
+import { BlogDBModel } from '../modules/super-admin/infrastructure/entity/blog-db.model';
 
-export const toBlogViewModel = (blogDB: BlogModel) => {
+export const toBlogViewModel = (blogDB: BlogDBModel) => {
   return {
     id: blogDB.id,
     name: blogDB.name,

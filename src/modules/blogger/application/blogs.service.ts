@@ -6,7 +6,7 @@ import { toBlogViewModel } from '../../../data-mapper/to-blog-view.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { BlogModel } from '../../super-admin/infrastructure/entity/blog.model';
+import { BlogDBModel } from '../../super-admin/infrastructure/entity/blog-db.model';
 import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
 
 @Injectable()
@@ -14,11 +14,13 @@ export class BloggerBlogService {
   constructor(protected blogsRepository: BloggerBlogRepository) {}
 
   async getBlogs(userId: string, query: QueryParametersDTO): Promise<ContentPageModel | null> {
-    const blogs = await this.blogsRepository.getBlogs(userId, query);
+    const blogsDB = await this.blogsRepository.getBlogs(userId, query);
 
-    if (!blogs) {
+    if (!blogsDB) {
       return null;
     }
+
+    const blogs = blogsDB.map(b => toBlogViewModel(b))
 
     const totalCount = await this.blogsRepository.getTotalCount(
       query.searchNameTerm,
@@ -36,13 +38,14 @@ export class BloggerBlogService {
     userId: string,
     inputModel: BlogDTO,
   ): Promise<BlogViewModel | null> {
-    const newBlog = new BlogModel(
+    const newBlog = new BlogDBModel(
       uuidv4(),
       userId,
       inputModel.name,
       inputModel.description,
       inputModel.websiteUrl,
       new Date().toISOString(),
+      false
     );
 
     const createdBlog = await this.blogsRepository.createBlog(newBlog);

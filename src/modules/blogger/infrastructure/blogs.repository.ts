@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { BlogDTO } from '../api/dto/blogDTO';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../helper.functions';
-import { BlogModel } from 'src/modules/super-admin/infrastructure/entity/blog.model';
+import { BlogDBModel } from 'src/modules/super-admin/infrastructure/entity/blog-db.model';
 import { BlogSchema } from '../../super-admin/infrastructure/entity/blog.schema';
 
 @Injectable()
 export class BloggerBlogRepository {
-  async getBlogs(userId: string, query: QueryParametersDTO): Promise<BlogModel[]> {
+  async getBlogs(userId: string, query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find({
         $and: [
-          {userId},
+          {userId, isBanned: false},
           { name: { $regex: query.searchNameTerm, $options: 'i' } }
         ]}, { _id: false, __v: false },
     )
@@ -26,11 +26,11 @@ export class BloggerBlogRepository {
     });
   }
 
-  async getBlogById(id: string): Promise<BlogModel | null> {
+  async getBlogById(id: string): Promise<BlogDBModel | null> {
     return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
   }
 
-  async createBlog(newBlog: BlogModel): Promise<BlogModel | null> {
+  async createBlog(newBlog: BlogDBModel): Promise<BlogDBModel | null> {
     try {
       await BlogSchema.create(newBlog);
       return newBlog;

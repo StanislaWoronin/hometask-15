@@ -102,6 +102,7 @@ export class BloggerController {
   @Delete(':blogId')
   @HttpCode(204)
   async deleteBlog(@Param('blogId') blogId: string) {
+    console.log(blogId)
     const result = await this.blogsService.deleteBlog(blogId);
 
     if (!result) {

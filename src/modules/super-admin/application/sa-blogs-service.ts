@@ -4,7 +4,7 @@ import { paginationContentPage } from '../../../helper.functions';
 import { SaBlogsRepository } from '../infrastructure/sa-blogs.repository';
 import { BindBlogDTO } from '../api/dto/bind-blog.dto';
 import { Injectable } from "@nestjs/common";
-import { BlogModel } from "../infrastructure/entity/blog.model";
+import { BlogDBModel } from "../infrastructure/entity/blog-db.model";
 import { UsersRepository } from "../infrastructure/users.repository";
 import { BlogViewWithOwnerInfoModel } from "../api/dto/blog-view-with-owner-info.model";
 
@@ -42,7 +42,7 @@ export class SaBlogsService {
     return this.saBlogsRepository.bindBlog(params);
   }
 
-  private async addOwnerInfo(blog: BlogModel): Promise<BlogViewWithOwnerInfoModel> {
+  private async addOwnerInfo(blog: BlogDBModel): Promise<BlogViewWithOwnerInfoModel> {
     const ownerInfo = await this.userRepository.getUserByIdOrLoginOrEmail(blog.userId)
 
     let userId = null

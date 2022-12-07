@@ -20,11 +20,13 @@ import bcrypt from 'bcrypt';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BanUserDTO } from "../api/dto/ban-user.dto";
 import { LikesRepository } from "../../public/likes/infrastructure/likes.repository";
+import { BlogsRepository } from "../../public/blogs/infrastructure/blogs.repository";
 
 @Injectable()
 export class UsersService {
   constructor(
     protected banInfoRepository: BanInfoRepository,
+    protected blogRepository: BlogsRepository,
     protected emailConfirmationRepository: EmailConfirmationRepository,
     protected likesRepository: LikesRepository,
     protected usersRepository: UsersRepository,
@@ -120,7 +122,7 @@ export class UsersService {
       banDate = new Date()
       banReason = dto.banReason
     }
-
+    await this.blogRepository.updateBanStatus(userId, dto.isBanned)
     await this.likesRepository.updateBanStatus(userId, dto.isBanned)
     return this.banInfoRepository.updateBanStatus(userId, dto.isBanned, banReason, banDate)
   }

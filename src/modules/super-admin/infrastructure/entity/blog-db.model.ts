@@ -1,4 +1,4 @@
-export class BlogModel {
+export class BlogDBModel {
   constructor(
     public id: string,
     public userId: string,
@@ -6,5 +6,6 @@ export class BlogModel {
     public description: string,
     public websiteUrl: string,
     public createdAt: string,
+    public isBanned: boolean
   ) {}
 }

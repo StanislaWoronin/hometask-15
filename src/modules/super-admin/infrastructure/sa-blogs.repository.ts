@@ -1,13 +1,13 @@
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../helper.functions';
 import { BindBlogDTO } from '../api/dto/bind-blog.dto';
-import { BlogModel } from './entity/blog.model';
+import { BlogDBModel } from './entity/blog-db.model';
 import { BlogSchema } from './entity/blog.schema';
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class SaBlogsRepository {
-  async getBlogs(query: QueryParametersDTO): Promise<BlogModel[]> {
+  async getBlogs(query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
       { _id: false, __v: false },
@@ -24,7 +24,7 @@ export class SaBlogsRepository {
     });
   }
 
-  async getBlogById(id: string): Promise<BlogModel | null> {
+  async getBlogById(id: string): Promise<BlogDBModel | null> {
     return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
   }
 

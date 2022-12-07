@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
-import { BlogModel } from '../../../super-admin/infrastructure/entity/blog.model';
+import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
 import { BlogSchema } from '../../../super-admin/infrastructure/entity/blog.schema';
 import { giveSkipNumber } from '../../../../helper.functions';
+import { LikesScheme } from "../../likes/infrastructure/entity/likes.scheme";
 
 @Injectable()
 export class BlogsRepository {
-  async getBlogs(query: QueryParametersDTO): Promise<BlogModel[]> {
+  async getBlogs(query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
       { _id: false, __v: false },
@@ -23,7 +24,19 @@ export class BlogsRepository {
     });
   }
 
-  async getBlogById(id: string): Promise<BlogModel | null> {
-    return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
+  async getBlogById(id: string): Promise<BlogDBModel | null> {
+    return BlogSchema.findOne({ id,  }, { _id: false, __v: false });
+  }
+
+  async updateBanStatus(userId: string, isBanned: boolean) {
+    try {
+      await LikesScheme.updateOne(
+        { userId },
+        { $set: { isBanned } },
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
