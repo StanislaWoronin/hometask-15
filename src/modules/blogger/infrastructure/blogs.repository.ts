@@ -12,7 +12,7 @@ export class BloggerBlogRepository {
         $and: [
           { userId, isBanned: false },
           { name: { $regex: query.searchNameTerm, $options: 'i' } }
-        ]}, { _id: false, __v: false, userId: false },
+        ]}, { _id: false, __v: false, userId: false, isBanned: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
