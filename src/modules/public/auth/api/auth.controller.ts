@@ -32,11 +32,13 @@ import { CheckCredentialGuard } from '../../../../guards/check-credential.guard'
 import { UserDTO } from '../../../super-admin/api/dto/userDTO';
 import { EmailResendingValidationPipe } from '../../../../pipe/email-resending.pipe';
 import { RefreshTokenValidationGuard } from '../../../../guards/refresh-token-validation.guard';
+import { CreateUserUseCase } from "../../../super-admin/api/use-cases/create-user.use-case";
 
 @Controller('auth')
 export class AuthController {
   constructor(
     protected authService: AuthService,
+    protected createUserUseCase: CreateUserUseCase,
     protected jwsService: JwtService,
     protected emailManager: EmailManager,
     protected emailConfirmationService: EmailConfirmationService,
@@ -128,7 +130,7 @@ export class AuthController {
   @Post('registration')
   @HttpCode(204)
   async registration(@Body() dto: UserDTO) {
-    const createdUser = await this.usersService.createUser(dto);
+    const createdUser = await this.createUserUseCase.execute( dto);
 
     if (!createdUser) {
       throw new NotImplementedException();

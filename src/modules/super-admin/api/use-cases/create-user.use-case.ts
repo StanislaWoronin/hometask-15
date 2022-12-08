@@ -11,6 +11,7 @@ import { _generateHash } from "../../../../helper.functions";
 import { BanInfoRepository } from "../../infrastructure/banInfo.repository";
 import { EmailConfirmationRepository } from "../../infrastructure/emailConfirmation.repository";
 import { UsersRepository } from "../../infrastructure/users.repository";
+import { settings } from "../../../../settings";
 
 @Injectable()
 export class CreateUserUseCase {
@@ -23,6 +24,9 @@ export class CreateUserUseCase {
   async execute(dto: UserDTO) {
     const hash = await _generateHash(dto.password);
     const userAccountId = uuidv4();
+    //const createdAt = new Date().toISOString()
+
+    //const accountData = UserDBModel.makeInstance(userAccountId, dto, hash, createdAt)
 
     const accountData = new UserDBModel(
       userAccountId,
@@ -36,7 +40,7 @@ export class CreateUserUseCase {
     const emailConfirmation = new EmailConfirmationModel(
       userAccountId,
       uuidv4(),
-      add(new Date(), { hours: 24 }),
+      add(new Date(), { hours: Number(settings.CONFIRMATION_CODE_EXPIRE) }),
       false,
     );
 

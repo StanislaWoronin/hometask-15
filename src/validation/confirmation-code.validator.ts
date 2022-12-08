@@ -23,15 +23,7 @@ export class ConfirmationCodeValidator implements ValidatorConstraintInterface {
       return false;
     }
 
-    if (emailConfirmation.isConfirmed === true) {
-      return false;
-    }
-
-    if (emailConfirmation.expirationDate < new Date()) {
-      return false;
-    }
-
-    return true;
+    return emailConfirmation.canBeConfirmed() // 'smart' object
   }
 
   defaultMessage(args: ValidationArguments) {

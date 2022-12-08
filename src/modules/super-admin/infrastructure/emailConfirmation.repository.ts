@@ -6,7 +6,7 @@ import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 export class EmailConfirmationRepository {
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
-  ): Promise<EmailConfirmationModel | null> {
+  )/*: Promise<EmailConfirmationModel | null>*/ {
     return EmailConfirmationScheme.findOne(
       { $or: [{ confirmationCode: codeOrId }, { id: codeOrId }] },
       { _id: false, __v: false },
