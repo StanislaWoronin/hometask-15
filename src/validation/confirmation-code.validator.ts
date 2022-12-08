@@ -23,7 +23,7 @@ export class ConfirmationCodeValidator implements ValidatorConstraintInterface {
       return false;
     }
 
-    return emailConfirmation.canBeConfirmed() // 'smart' object
+    return emailConfirmation.canBeConfirmed() // TODO 'smart' object
   }
 
   defaultMessage(args: ValidationArguments) {
